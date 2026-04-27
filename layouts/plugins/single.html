@@ -1,0 +1,49 @@
+{{ define "main" }}
+  <article class="plugin-detail">
+    <header>
+      <h1>{{ .Title }}</h1>
+      <p class="meta">
+        <span>v{{ .Params.version }}</span>
+        {{ with .Params.author }}
+          · <span>by {{ . }}</span>
+        {{ end }}
+        {{ with .Params.minStudioVersion }}
+          · <span>requires Hugo Studio ≥ {{ . }}</span>
+        {{ end }}
+      </p>
+      {{ with .Params.extensionPoints }}
+        <ul class="extension-points">
+          {{ range . }}
+            <li>{{ . }}</li>
+          {{ end }}
+        </ul>
+      {{ end }}
+    </header>
+
+    {{ $screenshots := slice }}
+    {{ with .Resources.Match "*.png" }}{{ $screenshots = $screenshots | append . }}{{ end }}
+    {{ with .Resources.Match "*.jpg" }}{{ $screenshots = $screenshots | append . }}{{ end }}
+    {{ with .Resources.Match "*.webp" }}{{ $screenshots = $screenshots | append . }}{{ end }}
+    {{ if $screenshots }}
+      <section class="screenshots">
+        {{ range $screenshots }}
+          <img src="{{ .Permalink }}" alt="{{ $.Title }} screenshot" loading="lazy" />
+        {{ end }}
+      </section>
+    {{ end }}
+
+    <section class="prose">{{ .Content }}</section>
+
+    <section class="install">
+      <h2>Install</h2>
+      <dl class="kv">
+        <dt>Source</dt>
+        <dd><a href="{{ .Params.repo }}">{{ .Params.repo }}</a></dd>
+        <dt>Download</dt>
+        <dd><a href="{{ .Params.installUrl }}">{{ .Params.installUrl }}</a></dd>
+        <dt>Install location</dt>
+        <dd><code>&lt;site&gt;/.hugoeditor/plugins/{{ .Params.name }}/</code></dd>
+      </dl>
+    </section>
+  </article>
+{{ end }}

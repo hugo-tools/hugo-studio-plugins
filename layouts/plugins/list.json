@@ -1,0 +1,52 @@
+{{- /*
+  Marketplace JSON feed.
+  Hugo Studio's "Browse" tab GETs this URL and renders one card per
+  entry. `feedVersion` lets the editor refuse a newer feed shape it
+  doesn't understand; bump it whenever a non-additive change ships.
+*/ -}}
+{{- $items := slice -}}
+{{- range .Pages -}}
+  {{- $screenshots := slice -}}
+  {{- with .Resources.Match "*.png" -}}
+    {{- range . -}}
+      {{- $screenshots = $screenshots | append .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .Resources.Match "*.jpg" -}}
+    {{- range . -}}
+      {{- $screenshots = $screenshots | append .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .Resources.Match "*.webp" -}}
+    {{- range . -}}
+      {{- $screenshots = $screenshots | append .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $entry := dict
+    "name" .Params.name
+    "title" .Title
+    "version" .Params.version
+    "author" .Params.author
+    "authorUrl" (.Params.authorUrl | default "")
+    "description" (.Description | default (.Summary | plainify | truncate 200))
+    "repo" .Params.repo
+    "installUrl" .Params.installUrl
+    "extensionPoints" (.Params.extensionPoints | default slice)
+    "minStudioVersion" .Params.minStudioVersion
+    "detailUrl" .Permalink
+    "screenshots" $screenshots
+    "updatedAt" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+  -}}
+  {{- $items = $items | append $entry -}}
+{{- end -}}
+{{- $payload := dict
+  "feedVersion" 1
+  "generatedAt" (now.Format "2006-01-02T15:04:05Z07:00")
+  "marketplace" (dict
+    "name" .Site.Title
+    "url" .Site.BaseURL
+    "source" .Site.Params.marketplaceRepo
+  )
+  "plugins" $items
+-}}
+{{- $payload | jsonify (dict "indent" "  ") -}}

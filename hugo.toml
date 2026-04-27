@@ -1,0 +1,39 @@
+baseURL = "https://hugo-tools.github.io/hugo-studio-plugins/"
+languageCode = "en-us"
+defaultContentLanguage = "en"
+title = "Hugo Studio Plugins"
+
+# This site doesn't use taxonomies — silences Hugo's default-template
+# warning for the auto-generated `categories` / `tags` taxonomies.
+disableKinds = ["taxonomy", "term"]
+
+# `unsafe = true` lets plugin descriptions embed the small bits of
+# HTML they often need (badges, screenshot frames). The marketplace
+# is curated, not user-submitted via a form, so the trust model is
+# the same as any other Hugo site that includes its own content.
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+# Section pages render as both HTML (the plugin index) and JSON (the
+# feed Hugo Studio's editor consumes). Per-page detail stays HTML-only.
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "JSON"]
+  page = ["HTML"]
+
+[params]
+  description = "Community plugins for the Hugo Studio desktop editor."
+  studioRepo = "https://github.com/hugo-tools/hugo-studio"
+  marketplaceRepo = "https://github.com/hugo-tools/hugo-studio-plugins"
+
+[menu]
+  [[menu.main]]
+    name = "Plugins"
+    url = "/plugins/"
+    weight = 10
+  [[menu.main]]
+    name = "Hugo Studio"
+    url = "https://github.com/hugo-tools/hugo-studio"
+    weight = 20

@@ -1,0 +1,27 @@
+{{ define "main" }}
+  <section class="hero">
+    <h1>{{ .Site.Title }}</h1>
+    <p class="lead">{{ .Site.Params.description }}</p>
+    <p>
+      <a class="cta" href="{{ "plugins/" | absURL }}">Browse plugins</a>
+    </p>
+  </section>
+
+  {{ with .Content }}
+    <section class="prose">{{ . }}</section>
+  {{ end }}
+
+  {{ with site.GetPage "plugins" }}
+    {{ $items := .Pages | first 6 }}
+    {{ if $items }}
+      <section>
+        <h2>Latest</h2>
+        <ul class="plugin-grid">
+          {{ range $items }}
+            {{ partial "plugin-card.html" . }}
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
+  {{ end }}
+{{ end }}

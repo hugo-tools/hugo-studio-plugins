@@ -1,0 +1,15 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  <p class="hint">
+    Want yours here?
+    <a href="{{ .Site.Params.marketplaceRepo }}/blob/main/README.md#submit-a-plugin"
+      >Submit a plugin</a
+    >.
+  </p>
+  <ul class="plugin-grid">
+    {{ range .Pages }}
+      {{ partial "plugin-card.html" . }}
+    {{ end }}
+  </ul>
+{{ end }}

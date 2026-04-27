@@ -1,0 +1,21 @@
+<li class="plugin-card">
+  <a href="{{ .Permalink }}">
+    <header>
+      <h3>{{ .Title }}</h3>
+      <span class="version">v{{ .Params.version }}</span>
+    </header>
+    {{ with .Description | default .Summary }}
+      <p>{{ . | plainify | truncate 140 }}</p>
+    {{ end }}
+    {{ with .Params.extensionPoints }}
+      <ul class="extension-points">
+        {{ range . }}
+          <li>{{ . }}</li>
+        {{ end }}
+      </ul>
+    {{ end }}
+    <footer class="meta">
+      {{ with .Params.author }}<span>by {{ . }}</span>{{ end }}
+    </footer>
+  </a>
+</li>
